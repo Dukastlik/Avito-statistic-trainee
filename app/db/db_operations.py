@@ -16,10 +16,11 @@ async def add_query_stat(
 async def get_query_stat(
         conn: AsyncIOMotorClient, qid: str, start_time: float, end_time: float
 ):
-    start_time = 1607699274.126434
-    end_time = 1607699395.595017
+    # TODO NORMAL TIMES 
+    start_time = 0
+    end_time = 1807699395.595017
     pipeline = [
-        {"$match": {"_id": ObjectId("5fd389a16c91da7647afa52a")}},
+        {"$match": {"_id": ObjectId("5fd5f7b0319ff25ea758f020")}},
         {"$unwind": "$stat"},
         {"$match": {"stat.timestamp": {"$gte": start_time, "$lte": end_time}}},
         {"$group": {"_id": "$_id", "stat": {"$push": "$stat"}}},
@@ -28,6 +29,7 @@ async def get_query_stat(
     stat = conn[DB_NAME][COLLECTION].aggregate(pipeline)
     if stat:
         stat_list = await stat.to_list(length=1000)
+        #print(stat_list)
         return stat_list
 
 

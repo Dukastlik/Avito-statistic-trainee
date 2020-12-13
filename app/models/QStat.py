@@ -21,9 +21,15 @@ class PyObjectId(ObjectId):
         field_schema.update(type='string')
 
 
+'''class TopAdd(BaseModel):
+    ad_title: str
+    ad_url: str'''
+
+
 class Timestamp(BaseModel):
     timestamp: float
     ad_count: int
+    top_ads: List[dict]
 
     class Config:
         arbitrary_types_allowed = True
@@ -38,12 +44,11 @@ class QStat(BaseModel):
     region: str
     stat: List[Timestamp]
 
-
-
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {
             ObjectId: str
         }
+
 
 
