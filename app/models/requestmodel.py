@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from uuid import UUID
-from datetime import datetime
+from fastapi import Query
 
 
 class AddRequest(BaseModel):
@@ -9,6 +8,6 @@ class AddRequest(BaseModel):
 
 
 class StatRequest(BaseModel):
-    id: str
+    id: str = Query(..., min_length=24, max_length=24)
     start_time: str
     end_time: str

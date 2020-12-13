@@ -1,5 +1,5 @@
 import requests
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 from datetime import datetime
 from bson import ObjectId
 from models.QStat import Timestamp, QStat

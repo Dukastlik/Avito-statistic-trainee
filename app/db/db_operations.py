@@ -9,7 +9,6 @@ async def add_query_stat(
         conn: AsyncIOMotorClient, querydata: QStat
 ):
     query = await conn[DB_NAME][COLLECTION].insert_one(querydata)
-    #new_query = await query_stat.find_one({"_id": query.inserted_id})
     return query.inserted_id
 
 
@@ -17,10 +16,10 @@ async def get_query_stat(
         conn: AsyncIOMotorClient, qid: str, start_time: float, end_time: float
 ):
     # TODO NORMAL TIMES
-    start_time = 0
-    end_time = 1807699395.595017
+    #start_time = 0
+    #end_time = 1807699395.595017
     pipeline = [
-        {"$match": {"_id": ObjectId("5fd5f7b0319ff25ea758f020")}},
+        {"$match": {"_id": ObjectId(qid)}},
         {"$unwind": "$stat"},
         {"$match": {"stat.timestamp": {"$gte": start_time, "$lte": end_time}}},
         {"$group": {"_id": "$_id", "stat": {"$push": "$stat"}}},
@@ -29,7 +28,8 @@ async def get_query_stat(
     stat = conn[DB_NAME][COLLECTION].aggregate(pipeline)
     if stat:
         stat_list = await stat.to_list(length=1000)
-        #print(stat_list)
+
+
         return stat_list
 
 
@@ -49,9 +49,7 @@ async def update_query_stat(
 
 async def get_all_stats():
     conn = db.client
-    all_stats = conn[DB_NAME][COLLECTION].find(
-                                                  {}, {"stat": {"$slice": -1}}
-    )
+    all_stats = conn[DB_NAME][COLLECTION].find({}, {"stat": {"$slice": -1}})
     if all_stats:
         stat_list = await all_stats.to_list(length=1000)
         return stat_list
