@@ -7,14 +7,14 @@ from db.mongodb import db
 
 async def add_query_stat(
         conn: AsyncIOMotorClient, querydata: QStat
-):
+) -> int:
     query = await conn[DB_NAME][COLLECTION].insert_one(querydata)
     return query.inserted_id
 
 
 async def get_query_stat(
         conn: AsyncIOMotorClient, qid: str, start_time: float, end_time: float
-):
+) -> list:
     pipeline = [
         {"$match": {"_id": ObjectId(qid)}},
         {"$unwind": "$stat"},
@@ -30,7 +30,7 @@ async def get_query_stat(
 
 async def update_query_stat(
         conn: AsyncIOMotorClient, qid: str, data: dict
-):
+) -> bool:
     querystat = await conn[DB_NAME][COLLECTION].find_one({"_id": ObjectId(qid)})
     if querystat:
         updated_query = await conn[DB_NAME][COLLECTION].update_one(
@@ -42,7 +42,8 @@ async def update_query_stat(
         return False
 
 
-async def get_all_stats():
+async def get_last_stats() -> list:
+
     conn = db.client
     all_stats = conn[DB_NAME][COLLECTION].find({}, {"stat": {"$slice": -1}})
     if all_stats:

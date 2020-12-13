@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from bson import ObjectId
-import datetime
 from typing import List, Optional
 
 
@@ -19,11 +18,6 @@ class PyObjectId(ObjectId):
     @classmethod
     def __modify_schema__(cls, field_schema):
         field_schema.update(type='string')
-
-
-'''class TopAdd(BaseModel):
-    ad_title: str
-    ad_url: str'''
 
 
 class Timestamp(BaseModel):
@@ -49,6 +43,3 @@ class QStat(BaseModel):
         json_encoders = {
             ObjectId: str
         }
-
-
-

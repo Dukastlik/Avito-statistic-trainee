@@ -10,4 +10,3 @@ db = DataBase()
 
 async def get_database() -> AsyncIOMotorClient:
     return db.client
-

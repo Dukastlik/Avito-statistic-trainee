@@ -11,6 +11,9 @@ router = APIRouter()
 @router.post('/add', status_code=status.HTTP_201_CREATED)
 async def add_stat(request: AddRequest, background_tasks: BackgroundTasks) -> dict:
     new_query_id = await register_new_query(request.query, request.region)
+
+    # Background_tasks here is not the best idea, it provides quick solution with bigger limitations.
+    # Should instead use celery or cron for scheduling further.
     background_tasks.add_task(
         update_query, str(new_query_id), request.query, request.region, background_tasks
     )

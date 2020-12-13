@@ -42,6 +42,7 @@ async def get_query_info(query: str, region: str) -> dict:
 
     # getting location id
     location_id = await get_location_id(region)
+
     # getting number of ads for query-region pair and top 4 ad info
     resp = requests.get(
             "https://m.avito.ru/api/9/items",
@@ -53,6 +54,7 @@ async def get_query_info(query: str, region: str) -> dict:
         )
     json_response = resp.json()
     ad_count = json_response['result']['mainCount']
+
     # top 4 ad information
     top_ads = []
     for i in range(4):
@@ -72,14 +74,17 @@ async def create_new_stat(query: str, region: str, ad_info: dict) -> QStat:
     # unpacking ad_info
     ad_count = ad_info["ad_count"]
     top_ads = ad_info["top_ads"]
+
     # current datetime in POSIX timestamp
     current_time = datetime.now().timestamp()
+
     # creating timestamp object
     newtimestamp = Timestamp(
         timestamp=current_time,
         ad_count=ad_count,
         top_ads=top_ads
     )
+
     # creating statistic object
     new_qstat = QStat(
         _id=ObjectId(),
@@ -98,8 +103,10 @@ async def register_new_query(
 
     # getting query info
     ad_info = await get_query_info(query, region)
+
     # creating new stat to insert
     new_qstat = await create_new_stat(query, region, ad_info)
+
     # inserting new entity to db
     new_query_id = await add_query_stat(db.client, new_qstat.dict(by_alias=True))
     return new_query_id
