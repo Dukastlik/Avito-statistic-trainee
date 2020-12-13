@@ -16,7 +16,7 @@ async def add_query_stat(
 async def get_query_stat(
         conn: AsyncIOMotorClient, qid: str, start_time: float, end_time: float
 ):
-    # TODO NORMAL TIMES 
+    # TODO NORMAL TIMES
     start_time = 0
     end_time = 1807699395.595017
     pipeline = [
