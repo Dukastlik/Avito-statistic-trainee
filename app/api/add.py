@@ -64,11 +64,10 @@ async def get_query_info(query: str, region: str) -> dict:
     return ad_info
 
 
+async def create_new_stat(query: str, region: str, ad_info: dict) -> QStat:
 
-async def create_new_stat(query: str, region: str, ad_info: dict):
-
-    #Creating a QStat object
-    #for query-region pair to insert in db
+    # Creating a QStat object
+    # for query-region pair to insert in db
 
     # unpacking ad_info
     ad_count = ad_info["ad_count"]
@@ -93,10 +92,10 @@ async def create_new_stat(query: str, region: str, ad_info: dict):
 
 async def register_new_query(
         query: str, region: str, db: DataBase = db
-):
-    '''
-    Add new query region pair to db
-    '''
+) -> str:
+
+    # Add new query region pair to db
+
     # getting query info
     ad_info = await get_query_info(query, region)
     # creating new stat to insert

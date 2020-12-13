@@ -4,10 +4,9 @@ from db.db_operations import get_query_stat
 from db.mongodb import db, DataBase
 
 
-
 async def get_stat(
         qid: str, start_time: str, end_time: str, db: DataBase = db
-):
+) -> dict:
     # converting time to POSIX timestamp
     try:
         posix_start_time = datetime.strptime(start_time, "%Y-%m-%d-%H").timestamp()
@@ -23,7 +22,7 @@ async def get_stat(
         raise HTTPException(
             status_code=400,
             detail="Stat with id {0} not found".format(qid),
-    )
+        )
     # forming a response from db data
     response = {}
     for item in query_stat[0]["stat"]:

@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  avito_statistic:
+    build: app/
+    restart: always
+    environment:
+      TZ: "Europe/Moscow"
+    ports:
+      - 8001:8001
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    restart: always

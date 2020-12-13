@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.post('/add', status_code=status.HTTP_201_CREATED)
-async def add_stat(request: AddRequest, background_tasks: BackgroundTasks):
+async def add_stat(request: AddRequest, background_tasks: BackgroundTasks) -> dict:
     new_query_id = await register_new_query(request.query, request.region)
     background_tasks.add_task(
         update_query, str(new_query_id), request.query, request.region, background_tasks
@@ -18,6 +18,6 @@ async def add_stat(request: AddRequest, background_tasks: BackgroundTasks):
 
 
 @router.get('/stat')
-async def retrieve_stat(request: StatRequest):
+async def retrieve_stat(request: StatRequest) -> dict:
     response = await get_stat(request.id, request.start_time, request.end_time)
     return response
